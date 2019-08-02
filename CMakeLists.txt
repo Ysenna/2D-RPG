@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 3.7)
 
 # build executable
 ADD_EXECUTABLE(my_rpg
-        Src/main.cpp
-        Src/Actor.cpp
+        src/main.cpp
+        src/Actor.cpp
+        src/Renderer.cpp
+        src/AssetManager.cpp
         )
 
 target_link_libraries(my_rpg

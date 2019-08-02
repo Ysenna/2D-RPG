@@ -36,6 +36,8 @@ enum class Direction
 };
 
 
+Direction getDirectionFromVector(Vector2D directionVec);
+
 class Actor
 {
 private:
