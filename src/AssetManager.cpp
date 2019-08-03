@@ -40,8 +40,8 @@ int AssetManager::loadAssets(SDL_Renderer *renderer)
     }
 
     // Load sprites
-    m_character = IMG_LoadTexture(renderer, (m_assetPath + "female_walkcycle.png").c_str());
-    if (m_character == nullptr) {
+    m_characterTexture = IMG_LoadTexture(renderer, (m_assetPath + "female_walkcycle.png").c_str());
+    if (m_characterTexture == nullptr) {
         return -1;
     }
 

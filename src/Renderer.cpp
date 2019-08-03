@@ -1,10 +1,12 @@
 #include <iostream>
 
 #include "Renderer.h"
+#include "Animation.h"
 
 
 
 extern Actor g_actor;
+extern Animation g_animation;
 
 
 
@@ -107,11 +109,7 @@ void Renderer::renderScene()
 
     renderMap();
 
-    SDL_Rect spriteRect;
-    spriteRect.x = 0;
-    spriteRect.y = 0;
-    spriteRect.w = 64;
-    spriteRect.h = 64;
+    std::shared_ptr<SDL_Rect> spriteRect = g_animation.getFrameRect();
 
     SDL_Rect charPosRect;
     charPosRect.x = g_actor.GetPosition().x;
@@ -119,7 +117,7 @@ void Renderer::renderScene()
     charPosRect.w = 64;
     charPosRect.h = 64;
 
-    SDL_RenderCopy(m_sdlRenderer, m_assetMgr.m_character, &spriteRect, &charPosRect);
+    SDL_RenderCopy(m_sdlRenderer, m_assetMgr.m_characterTexture, spriteRect.get(), &charPosRect);
 
     // Up until now everything was drawn behind the scenes.
     // This will show the new contents of the window.

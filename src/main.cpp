@@ -8,10 +8,12 @@
 
 #include "Renderer.h"
 #include "Actor.h"
+#include "Animation.h"
 
 
 
 Actor g_actor;
+Animation g_animation;
 
 
 
@@ -53,7 +55,28 @@ int main()
         if (keystate[SDL_SCANCODE_DOWN] || keystate[SDL_SCANCODE_S]) {
             directionVector.y += 1.0;
         }
-        g_actor.Move(getDirectionFromVector(directionVector));
+
+        Direction direction = getDirectionFromVector(directionVector);
+        g_actor.Move(direction);
+        if (direction == Direction::NONE) {
+            g_animation.setAnimation("standing");
+        }
+        else if (direction == Direction::UP) {
+            g_animation.setAnimation("walkingUp");
+        }
+        else if (direction == Direction::DOWN) {
+            g_animation.setAnimation("walkingDown");
+        }
+        else if (direction == Direction::LEFT ||
+                 direction == Direction::LEFT_UP ||
+                 direction == Direction::LEFT_DOWN) {
+            g_animation.setAnimation("walkingLeft");
+        }
+        else if (direction == Direction::RIGHT ||
+                 direction == Direction::RIGHT_UP ||
+                 direction == Direction::RIGHT_DOWN) {
+            g_animation.setAnimation("walkingRight");
+        }
 
         // TO DO - Replace static value with a time remaining to next frame
         SDL_Delay(10);

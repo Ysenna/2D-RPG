@@ -15,7 +15,7 @@ public:
     Tmx::Map *m_map;
 
     std::map<std::string, SDL_Texture *> m_tilesetList; // List of tileset name + texture pairs
-    SDL_Texture *m_character;
+    SDL_Texture *m_characterTexture;
 
     AssetManager();
     ~AssetManager();
