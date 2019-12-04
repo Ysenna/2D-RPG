@@ -13,6 +13,7 @@ class Animation
 private:
     unsigned m_currentFrame = 0;
     unsigned m_frameCount = 1;
+    // for walking, running... the duration has to change based on speed
     unsigned m_frameDuration = 100;
     unsigned m_sheetRow = 2;
     unsigned m_tileWidth = 64;

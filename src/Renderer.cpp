@@ -7,6 +7,7 @@
 
 extern Actor g_actor;
 extern Animation g_animation;
+extern AssetManager g_assetMgr;
 
 
 
@@ -22,8 +23,8 @@ Renderer::Renderer()
                  "2D RPG",                  // window title
                  SDL_WINDOWPOS_UNDEFINED,           // initial x position
                  SDL_WINDOWPOS_UNDEFINED,           // initial y position
-                 1024,                               // width, in pixels
-                 900,                               // height, in pixels
+                 640,                               // width, in pixels
+                 640,                               // height, in pixels
                  SDL_WINDOW_SHOWN                  // flags - see below
              );
     // Check that the window was successfully created
@@ -42,7 +43,7 @@ Renderer::Renderer()
    //     return -1;
     }
 
-    m_assetMgr.loadAssets(m_sdlRenderer);
+    g_assetMgr.loadAssets(m_sdlRenderer);
 }
 
 
@@ -62,8 +63,8 @@ void Renderer::renderMap()
     // They can be grouped and Tmx::Map then contains a Group layer
     // which stores it's Tile layers.
     // Iterate through the tile layers.
-    for (int i = 0; i < m_assetMgr.m_map->GetNumTileLayers(); ++i) {
-        const Tmx::TileLayer *tileLayer = m_assetMgr.m_map->GetTileLayer(i);
+    for (int i = 0; i < g_assetMgr.m_map->GetNumTileLayers(); ++i) {
+        const Tmx::TileLayer *tileLayer = g_assetMgr.m_map->GetTileLayer(i);
 
         for (int y = 0; y < tileLayer->GetHeight(); ++y) {
             for (int x = 0; x < tileLayer->GetWidth(); ++x) {
@@ -72,7 +73,7 @@ void Renderer::renderMap()
 
                 if (tilesetIdx != -1) {
                     unsigned tileId = tileLayer->GetTileId(x, y);
-                    const Tmx::Tileset *tileset = m_assetMgr.m_map->GetTileset(tilesetIdx);
+                    const Tmx::Tileset *tileset = g_assetMgr.m_map->GetTileset(tilesetIdx);
 
                     if (tileset != nullptr) {
                         int tilesPerRow = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
@@ -90,7 +91,12 @@ void Renderer::renderMap()
                         targetRect.w = tileset->GetTileWidth();
                         targetRect.h = tileset->GetTileHeight();
 
-                        SDL_RenderCopy(m_sdlRenderer, m_assetMgr.m_tilesetList.find(tileset->GetName())->second, &tileRect, &targetRect);
+                        SDL_RenderCopy(
+                                    m_sdlRenderer,
+                                    g_assetMgr.m_tilesetList.find(tileset->GetName())->second,
+                                    &tileRect,
+                                    &targetRect
+                                    );
                     }
                 }
             }
@@ -112,14 +118,21 @@ void Renderer::renderScene()
     std::shared_ptr<SDL_Rect> spriteRect = g_animation.getFrameRect();
 
     SDL_Rect charPosRect;
-    charPosRect.x = g_actor.GetPosition().x;
-    charPosRect.y = g_actor.GetPosition().y;
+    charPosRect.x = g_actor.GetPosition().x - 32;
+    charPosRect.y = g_actor.GetPosition().y - 64;
     charPosRect.w = 64;
     charPosRect.h = 64;
 
-    SDL_RenderCopy(m_sdlRenderer, m_assetMgr.m_characterTexture, spriteRect.get(), &charPosRect);
+    SDL_RenderCopy(m_sdlRenderer, g_assetMgr.m_characterTexture, spriteRect.get(), &charPosRect);
 
     // Up until now everything was drawn behind the scenes.
     // This will show the new contents of the window.
     SDL_RenderPresent(m_sdlRenderer);
+}
+
+
+
+SDL_Renderer* Renderer::getSdlRenderer()
+{
+    return m_sdlRenderer;
 }

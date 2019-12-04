@@ -16,6 +16,8 @@ AssetManager::~AssetManager()
 
 
 
+// the renderer here can propbably be owned by asset manager
+// storage and rendering should be decoupled
 int AssetManager::loadAssets(SDL_Renderer *renderer)
 {
     // load map

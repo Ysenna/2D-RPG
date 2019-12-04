@@ -9,7 +9,7 @@
 class Renderer
 {
 private:
-    AssetManager m_assetMgr;
+
 
     SDL_Window *m_window;
     SDL_Renderer *m_sdlRenderer;
@@ -21,6 +21,9 @@ public:
     void renderMap();
     int loadAssets();
     void renderScene();
+
+    // this is just wrong... it has to be structured better way
+    SDL_Renderer* getSdlRenderer();
 };
 
 #endif // RENDERER_H

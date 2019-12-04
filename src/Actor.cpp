@@ -1,6 +1,15 @@
+#include <Tmx.h>
+
 #include "Actor.h"
+#include "AssetManager.h"
+
+
 
 #define SIN_45 0.707
+
+
+
+extern AssetManager g_assetMgr;
 
 
 
@@ -9,32 +18,65 @@ void Actor::Move(Direction direction)
     // TO DO - scale traveled distance by time delta since last frame
     switch (direction) {
         case Direction::LEFT:
-            m_position.x -= m_speed;
+            // 32 = half of character rect width... in future replace by colision
+            if (m_position.x - m_speed >= 16) {
+                m_position.x -= m_speed;
+            }
             break;
         case Direction::RIGHT:
-            m_position.x += m_speed;
+            // To DO - Position of actor needs to be mapped to the center coordinates of animation
+            // instead of checking map size etc., this has to be done by collision
+            if (m_position.x + m_speed <=
+                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                m_position.x += m_speed;
+            }
             break;
         case Direction::UP:
-            m_position.y -= m_speed;
+            if (m_position.y - m_speed >= 16) {
+                m_position.y -= m_speed;
+            }
             break;
         case Direction::DOWN:
-            m_position.y += m_speed;
+            if (m_position.y + m_speed <=
+                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                m_position.y += m_speed;
+            }
             break;
         case Direction::LEFT_UP:
-            m_position.x -= m_speed * SIN_45;
-            m_position.y -= m_speed * SIN_45;
+            if (m_position.x - m_speed * SIN_45 >= 16) {
+                m_position.x -= m_speed * SIN_45;
+            }
+            if (m_position.y - m_speed * SIN_45 >= 16) {
+                m_position.y -= m_speed * SIN_45;
+            }
             break;
         case Direction::LEFT_DOWN:
-            m_position.x -= m_speed * SIN_45;
-            m_position.y += m_speed * SIN_45;
+            if (m_position.x - m_speed * SIN_45 >= 16) {
+                m_position.x -= m_speed * SIN_45;
+            }
+            if (m_position.y + m_speed * SIN_45 <=
+                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                m_position.y += m_speed * SIN_45;
+            }
             break;
         case Direction::RIGHT_UP:
-            m_position.x += m_speed * SIN_45;
-            m_position.y -= m_speed * SIN_45;
+            if (m_position.x + m_speed * SIN_45 <=
+                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                m_position.x += m_speed * SIN_45;
+            }
+            if (m_position.y - m_speed * SIN_45 >= 16) {
+                m_position.y -= m_speed * SIN_45;
+            }
             break;
         case Direction::RIGHT_DOWN:
-            m_position.x += m_speed * SIN_45;
-            m_position.y += m_speed * SIN_45;
+            if (m_position.x + m_speed * SIN_45 <=
+                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                m_position.x += m_speed * SIN_45;
+            }
+            if (m_position.y + m_speed * SIN_45 <=
+                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                m_position.y += m_speed * SIN_45;
+            }
             break;
     }
 }
