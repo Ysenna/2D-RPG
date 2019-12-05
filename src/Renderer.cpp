@@ -7,7 +7,7 @@
 
 extern Actor g_actor;
 extern Animation g_animation;
-extern AssetManager g_assetMgr;
+extern ResourceManager g_resourceMgr;
 
 
 
@@ -43,7 +43,7 @@ Renderer::Renderer()
    //     return -1;
     }
 
-    g_assetMgr.loadAssets(m_sdlRenderer);
+    g_resourceMgr.loadAssets(m_sdlRenderer);
 }
 
 
@@ -63,8 +63,8 @@ void Renderer::renderMap()
     // They can be grouped and Tmx::Map then contains a Group layer
     // which stores it's Tile layers.
     // Iterate through the tile layers.
-    for (int i = 0; i < g_assetMgr.m_map->GetNumTileLayers(); ++i) {
-        const Tmx::TileLayer *tileLayer = g_assetMgr.m_map->GetTileLayer(i);
+    for (int i = 0; i < g_resourceMgr.m_map->GetNumTileLayers(); ++i) {
+        const Tmx::TileLayer *tileLayer = g_resourceMgr.m_map->GetTileLayer(i);
 
         for (int y = 0; y < tileLayer->GetHeight(); ++y) {
             for (int x = 0; x < tileLayer->GetWidth(); ++x) {
@@ -73,7 +73,7 @@ void Renderer::renderMap()
 
                 if (tilesetIdx != -1) {
                     unsigned tileId = tileLayer->GetTileId(x, y);
-                    const Tmx::Tileset *tileset = g_assetMgr.m_map->GetTileset(tilesetIdx);
+                    const Tmx::Tileset *tileset = g_resourceMgr.m_map->GetTileset(tilesetIdx);
 
                     if (tileset != nullptr) {
                         int tilesPerRow = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
@@ -93,11 +93,56 @@ void Renderer::renderMap()
 
                         SDL_RenderCopy(
                                     m_sdlRenderer,
-                                    g_assetMgr.m_tilesetList.find(tileset->GetName())->second,
+                                    g_resourceMgr.m_tilesetList.find(tileset->GetName())->second,
                                     &tileRect,
                                     &targetRect
                                     );
                     }
+                }
+            }
+        }
+    }
+
+    std::cout << "Object rendering loop" << std::endl;
+    for (int i = 0; i < g_resourceMgr.m_map->GetNumObjectGroups(); ++i) {
+        std::cout << "loading object group " << i << std::endl;
+        const Tmx::ObjectGroup *objectGroup = g_resourceMgr.m_map->GetObjectGroup(i);
+
+        for (int objectIdx = 0; objectIdx < objectGroup->GetNumObjects(); ++objectIdx) {
+            std::cout << "loading object " << objectIdx << std::endl;
+            const Tmx::Object *object = objectGroup->GetObject(objectIdx);
+            int tilesetIdx = g_resourceMgr.m_map->FindTilesetIndex(object->GetGid());
+            std::cout << "object Gid = " << object->GetGid() << ", tilesetIdx = " << tilesetIdx << std::endl;
+
+            if (tilesetIdx =! -1) {
+                std::cout << "Getting object tileset" << std::endl;
+                const Tmx::Tileset *tileset = g_resourceMgr.m_map->GetTileset(tilesetIdx);
+                int tileId = object->GetGid() - tileset->GetFirstGid();
+
+                if (tileset != nullptr) {
+                    std::cout << "Rendering object tile" << std::endl;
+                    int tilesPerRow = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
+                    int tileCol = tileId / tilesPerRow;
+
+                    SDL_Rect tileRect;
+                    tileRect.x = (tileId - (tileCol * tilesPerRow)) * tileset->GetTileWidth();
+                    tileRect.y = tileCol * tileset->GetTileHeight();
+                    tileRect.w = object->GetWidth();
+                    tileRect.h = object->GetHeight();
+
+                    SDL_Rect targetRect;
+                    targetRect.x = object->GetX();
+                    // Tiled uses bottom left corner as reference point while SDL uses top left
+                    targetRect.y = object->GetY() - tileset->GetTileHeight();
+                    targetRect.w = tileset->GetTileWidth();
+                    targetRect.h = tileset->GetTileHeight();
+
+                    SDL_RenderCopy(
+                                m_sdlRenderer,
+                                g_resourceMgr.m_tilesetList.find(tileset->GetName())->second,
+                                &tileRect,
+                                &targetRect
+                                );
                 }
             }
         }
@@ -123,7 +168,7 @@ void Renderer::renderScene()
     charPosRect.w = 64;
     charPosRect.h = 64;
 
-    SDL_RenderCopy(m_sdlRenderer, g_assetMgr.m_characterTexture, spriteRect.get(), &charPosRect);
+    SDL_RenderCopy(m_sdlRenderer, g_resourceMgr.m_characterTexture, spriteRect.get(), &charPosRect);
 
     // Up until now everything was drawn behind the scenes.
     // This will show the new contents of the window.

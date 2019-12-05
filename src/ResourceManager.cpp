@@ -1,15 +1,15 @@
-#include "AssetManager.h"
+#include "ResourceManager.h"
 
 
 
-AssetManager::AssetManager()
+ResourceManager::ResourceManager()
 {
 
 }
 
 
 
-AssetManager::~AssetManager()
+ResourceManager::~ResourceManager()
 {
     delete m_map;
 }
@@ -18,7 +18,7 @@ AssetManager::~AssetManager()
 
 // the renderer here can propbably be owned by asset manager
 // storage and rendering should be decoupled
-int AssetManager::loadAssets(SDL_Renderer *renderer)
+int ResourceManager::loadAssets(SDL_Renderer *renderer)
 {
     // load map
     m_map = new Tmx::Map();

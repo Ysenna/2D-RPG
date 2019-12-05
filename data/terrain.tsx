@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.1" name="terrain" tilewidth="32" tileheight="32" tilecount="483" columns="21">
+<tileset version="1.2" tiledversion="1.3.1" name="terrain" tilewidth="32" tileheight="32" tilecount="483" columns="21">
  <image source="terrain.png" width="672" height="736"/>
  <terraintypes>
   <terrain name="Water" tile="40"/>
@@ -44,6 +44,11 @@
  <tile id="131" terrain="1,1,,1"/>
  <tile id="148" terrain="1,,1,1"/>
  <tile id="149" terrain=",1,1,1"/>
+ <tile id="150">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0" y="4" width="32" height="28"/>
+  </objectgroup>
+ </tile>
  <tile id="151" terrain="1,,1,1"/>
  <tile id="152" terrain=",1,1,1"/>
  <tile id="168" terrain=",,,1"/>

@@ -14,14 +14,14 @@
 
 Actor g_actor;
 Animation g_animation;
-AssetManager g_assetMgr;
+ResourceManager g_resourceMgr;
 
 
 
 int main()
 {
     Renderer renderer;
-    g_assetMgr.loadAssets(renderer.getSdlRenderer());
+    g_resourceMgr.loadAssets(renderer.getSdlRenderer());
 
     const Uint8 *keystate = SDL_GetKeyboardState(nullptr);
     if (keystate == nullptr) {

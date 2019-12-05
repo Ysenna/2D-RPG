@@ -1,7 +1,7 @@
 #include <Tmx.h>
 
 #include "Actor.h"
-#include "AssetManager.h"
+#include "ResourceManager.h"
 
 
 
@@ -9,7 +9,7 @@
 
 
 
-extern AssetManager g_assetMgr;
+extern ResourceManager g_resourceMgr;
 
 
 
@@ -27,7 +27,7 @@ void Actor::Move(Direction direction)
             // To DO - Position of actor needs to be mapped to the center coordinates of animation
             // instead of checking map size etc., this has to be done by collision
             if (m_position.x + m_speed <=
-                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                    g_resourceMgr.m_map->GetTileWidth() * g_resourceMgr.m_map->GetWidth() - 16) {
                 m_position.x += m_speed;
             }
             break;
@@ -38,7 +38,7 @@ void Actor::Move(Direction direction)
             break;
         case Direction::DOWN:
             if (m_position.y + m_speed <=
-                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                    g_resourceMgr.m_map->GetHeight() * g_resourceMgr.m_map->GetTileHeight() - 16) {
                 m_position.y += m_speed;
             }
             break;
@@ -55,13 +55,13 @@ void Actor::Move(Direction direction)
                 m_position.x -= m_speed * SIN_45;
             }
             if (m_position.y + m_speed * SIN_45 <=
-                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                    g_resourceMgr.m_map->GetHeight() * g_resourceMgr.m_map->GetTileHeight() - 16) {
                 m_position.y += m_speed * SIN_45;
             }
             break;
         case Direction::RIGHT_UP:
             if (m_position.x + m_speed * SIN_45 <=
-                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                    g_resourceMgr.m_map->GetTileWidth() * g_resourceMgr.m_map->GetWidth() - 16) {
                 m_position.x += m_speed * SIN_45;
             }
             if (m_position.y - m_speed * SIN_45 >= 16) {
@@ -70,11 +70,11 @@ void Actor::Move(Direction direction)
             break;
         case Direction::RIGHT_DOWN:
             if (m_position.x + m_speed * SIN_45 <=
-                    g_assetMgr.m_map->GetTileWidth() * g_assetMgr.m_map->GetWidth() - 16) {
+                    g_resourceMgr.m_map->GetTileWidth() * g_resourceMgr.m_map->GetWidth() - 16) {
                 m_position.x += m_speed * SIN_45;
             }
             if (m_position.y + m_speed * SIN_45 <=
-                    g_assetMgr.m_map->GetHeight() * g_assetMgr.m_map->GetTileHeight() - 16) {
+                    g_resourceMgr.m_map->GetHeight() * g_resourceMgr.m_map->GetTileHeight() - 16) {
                 m_position.y += m_speed * SIN_45;
             }
             break;

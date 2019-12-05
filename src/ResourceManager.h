@@ -8,7 +8,7 @@
 
 #include "Actor.h"
 
-class AssetManager
+class ResourceManager
 {
 public:
     const std::string m_assetPath = "../data/";
@@ -17,8 +17,8 @@ public:
     std::map<std::string, SDL_Texture *> m_tilesetList; // List of tileset name + texture pairs
     SDL_Texture *m_characterTexture;
 
-    AssetManager();
-    ~AssetManager();
+    ResourceManager();
+    ~ResourceManager();
 
     int loadAssets(SDL_Renderer *renderer);
 };

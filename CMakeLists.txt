@@ -6,7 +6,7 @@ ADD_EXECUTABLE(my_rpg
         src/main.cpp
         src/Actor.cpp
         src/Renderer.cpp
-        src/AssetManager.cpp
+        src/ResourceManager.cpp
         src/Animation.cpp
         )
 
