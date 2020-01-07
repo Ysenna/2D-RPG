@@ -4,6 +4,8 @@
 #include <iostream>
 #include <ostream>
 
+#include <SDL2/SDL_rect.h>
+
 struct Vector2D
 {
     double x;
@@ -45,6 +47,7 @@ private:
 
 protected:
     Vector2D m_position;
+    SDL_Rect m_walkRect;
     double m_speed;
 
 public:

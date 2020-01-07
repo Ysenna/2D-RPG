@@ -103,24 +103,24 @@ void Renderer::renderMap()
         }
     }
 
-    std::cout << "Object rendering loop" << std::endl;
+   // std::cout << "Object rendering loop" << std::endl;
     for (int i = 0; i < g_resourceMgr.m_map->GetNumObjectGroups(); ++i) {
-        std::cout << "loading object group " << i << std::endl;
+     //   std::cout << "loading object group " << i << std::endl;
         const Tmx::ObjectGroup *objectGroup = g_resourceMgr.m_map->GetObjectGroup(i);
 
         for (int objectIdx = 0; objectIdx < objectGroup->GetNumObjects(); ++objectIdx) {
-            std::cout << "loading object " << objectIdx << std::endl;
+          //  std::cout << "loading object " << objectIdx << std::endl;
             const Tmx::Object *object = objectGroup->GetObject(objectIdx);
             int tilesetIdx = g_resourceMgr.m_map->FindTilesetIndex(object->GetGid());
-            std::cout << "object Gid = " << object->GetGid() << ", tilesetIdx = " << tilesetIdx << std::endl;
+        //    std::cout << "object Gid = " << object->GetGid() << ", tilesetIdx = " << tilesetIdx << std::endl;
 
-            if (tilesetIdx =! -1) {
-                std::cout << "Getting object tileset" << std::endl;
+            if (tilesetIdx != -1) {
+             //   std::cout << "Getting object tileset" << std::endl;
                 const Tmx::Tileset *tileset = g_resourceMgr.m_map->GetTileset(tilesetIdx);
                 int tileId = object->GetGid() - tileset->GetFirstGid();
 
                 if (tileset != nullptr) {
-                    std::cout << "Rendering object tile" << std::endl;
+                //    std::cout << "Rendering object tile" << std::endl;
                     int tilesPerRow = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
                     int tileCol = tileId / tilesPerRow;
 
@@ -163,7 +163,7 @@ void Renderer::renderScene()
     std::shared_ptr<SDL_Rect> spriteRect = g_animation.getFrameRect();
 
     SDL_Rect charPosRect;
-    charPosRect.x = g_actor.GetPosition().x - 32;
+    charPosRect.x = g_actor.GetPosition().x;
     charPosRect.y = g_actor.GetPosition().y - 64;
     charPosRect.w = 64;
     charPosRect.h = 64;
