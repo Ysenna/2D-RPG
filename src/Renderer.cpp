@@ -1,3 +1,4 @@
+#include <TmxPropertySet.h>
 #include <iostream>
 
 #include "Renderer.h"
@@ -142,7 +143,7 @@ void Renderer::renderMap()
                                 g_resourceMgr.m_tilesetList.find(tileset->GetName())->second,
                                 &tileRect,
                                 &targetRect
-                                );
+                    );
                 }
             }
         }
@@ -169,6 +170,14 @@ void Renderer::renderScene()
     charPosRect.h = 64;
 
     SDL_RenderCopy(m_sdlRenderer, g_resourceMgr.m_characterTexture, spriteRect.get(), &charPosRect);
+
+    SDL_Rect charRcharCollisionRect;
+    charRcharCollisionRect.x = g_actor.GetPosition().x + 20;
+    charRcharCollisionRect.y = g_actor.GetPosition().y - 12;
+    charRcharCollisionRect.w = 24;
+    charRcharCollisionRect.h = 12;
+
+    SDL_RenderDrawRect(m_sdlRenderer, &charRcharCollisionRect);
 
     // Up until now everything was drawn behind the scenes.
     // This will show the new contents of the window.

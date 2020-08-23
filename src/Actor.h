@@ -51,7 +51,7 @@ protected:
     double m_speed;
 
 public:
-    Actor() : m_id(0), m_position(100.0, 100.0), m_speed(5.0) {};
+    Actor() : m_id(0), m_position(100.0, 100.0), m_speed(3.0) {};
     ~Actor() = default;
 
     Vector2D GetPosition()
