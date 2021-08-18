@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.07.16" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="14">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="23">
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="Water" width="20" height="20">
   <data encoding="csv">
@@ -98,11 +98,37 @@
 </data>
  </layer>
  <objectgroup id="6" name="Object Bot">
-  <object id="1" gid="151" x="427" y="366" width="32" height="32"/>
-  <object id="2" gid="130" x="427" y="334" width="32" height="32"/>
-  <object id="6" gid="1073741828" x="430" y="81" width="32" height="32" rotation="180"/>
-  <object id="7" gid="25" x="327" y="284" width="32" height="32"/>
-  <object id="13" gid="7" x="277.5" y="181" width="32" height="32"/>
+  <object id="1" gid="151" x="427" y="366" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="2" gid="130" x="427" y="334" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="18" gid="151" x="407.185" y="351.765" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="19" gid="130" x="407.185" y="319.765" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="20" gid="480" x="406.119" y="382.689" width="32" height="32"/>
+  <object id="21" gid="151" x="425.839" y="335.243" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="22" gid="130" x="425.839" y="303.243" width="32" height="32">
+   <properties>
+    <property name="multiID" type="int" value="3"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="7" name="Object Top"/>
+ <objectgroup id="7" name="Object Top" visible="0"/>
 </map>

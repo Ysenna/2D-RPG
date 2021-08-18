@@ -14,6 +14,10 @@ private:
     SDL_Window *m_window;
     SDL_Renderer *m_sdlRenderer;
 
+    void renderTileLayer(const Tmx::TileLayer *layer);
+    void renderObjectLayer(const Tmx::ObjectGroup *layer, bool renderActor);
+    void renderObject(const Tmx::Object *object);
+    void renderActor();
 public:
     Renderer();
     ~Renderer();

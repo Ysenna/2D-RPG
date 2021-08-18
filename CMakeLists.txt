@@ -8,6 +8,7 @@ ADD_EXECUTABLE(my_rpg
         src/Renderer.cpp
         src/ResourceManager.cpp
         src/Animation.cpp
+        src/MultiObject.cpp
         )
 
 target_link_libraries(my_rpg

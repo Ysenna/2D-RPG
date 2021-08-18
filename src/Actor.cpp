@@ -39,19 +39,25 @@ bool isCollision(const SDL_Rect &rect1, SDL_Rect *object)
             if (tileset->GetTile(tileId) != nullptr && tileset->GetTile(tileId)->HasObjects()) {
 //                        std::cout
                 std::vector<Tmx::Object*> tileObjects = tileset->GetTile(tileId)->GetObjects();
-                auto collisionBox = std::find_if(tileObjects.begin(), tileObjects.end(), [] (const Tmx::Object *object) {
-                    if (object->GetName() == "collision box") {
-                        return true;
-                    }
+                auto collisionBox = std::find_if(
+                            tileObjects.begin(),
+                            tileObjects.end(),
+                            [] (const Tmx::Object *object) {
+                                if (object->GetName() == "collision box") {
+                                    return true;
+                                }
 
-                    return false;
-                });
+                                return false;
+                            }
+                );
 
                 if (collisionBox != tileObjects.end()) {
                     object->x = objGroup->GetObject(obj)->GetX() + (*collisionBox)->GetX();
                     // Tiled uses bottom left corner as reference point while SDL uses top left
                     // but the collision box inside a tile uses the same as SDL
-                    object->y = objGroup->GetObject(obj)->GetY() - objGroup->GetObject(obj)->GetHeight() + (*collisionBox)->GetY();
+                    object->y = objGroup->GetObject(obj)->GetY()
+                            - objGroup->GetObject(obj)->GetHeight()
+                            + (*collisionBox)->GetY();
                     object->w = (*collisionBox)->GetWidth();
                     object->h = (*collisionBox)->GetHeight();
 
@@ -137,6 +143,8 @@ void Actor::Move(Direction direction)
                     g_resourceMgr.m_map->GetHeight() * g_resourceMgr.m_map->GetTileHeight() - 16) {
                 newY += m_speed * SIN_45;
             }
+            break;
+        default:
             break;
     }
 
