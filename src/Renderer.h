@@ -16,7 +16,6 @@ private:
 
     void renderTileLayer(const Tmx::TileLayer *layer);
     void renderObjectLayer(const Tmx::ObjectGroup *layer, bool renderActor);
-    void renderObject(const Tmx::Object *object);
     void renderActor();
 public:
     Renderer();
@@ -25,6 +24,7 @@ public:
     void renderMap();
     int loadAssets();
     void renderScene();
+    void renderObject(const Tmx::Object *object);
 
     // this is just wrong... it has to be structured better way
     SDL_Renderer* getSdlRenderer();

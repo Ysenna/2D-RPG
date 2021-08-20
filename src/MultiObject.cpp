@@ -1,6 +1,6 @@
 #include "MultiObject.h"
 
-MultiObject::MultiObject()
+LargeObject::LargeObject()
 {
 
 }

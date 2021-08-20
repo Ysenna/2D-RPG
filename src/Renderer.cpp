@@ -64,15 +64,10 @@ Renderer::~Renderer()
 void Renderer::renderMap()
 {
     // Go layer by layer and decide how to render it by it's type
-    int numLayers = g_resourceMgr.m_map->GetNumLayers();
-    for (int idx = 0; idx < numLayers; ++idx) {
+    for (Tmx::Layer *layer : g_resourceMgr.m_map->GetLayers()) {
 
         bool isActorLayer = false;
-        if (idx == numLayers -1) {
-            isActorLayer = true;
-        }
 
-        const Tmx::Layer *layer = g_resourceMgr.m_map->GetLayer(idx);
         switch (layer->GetLayerType()) {
             case Tmx::LayerType::TMX_LAYERTYPE_TILE:
                 renderTileLayer(dynamic_cast<const Tmx::TileLayer*>(layer));
@@ -133,72 +128,31 @@ void Renderer::renderObjectLayer(const Tmx::ObjectGroup *layer, bool isActorLaye
 {
     // TO DO: render actor among objects
 
-    // sort single tile objects by their position instead of ID
-    // and create large objects
-    const std::string MULTI_ID = "multiID";
-    std::vector<std::shared_ptr<MultiObject>> largeObjects;
-    std::vector<const Tmx::Object*> sortedObjects;
-    for (auto object : layer->GetObjects())  {
-
-        if (object->GetProperties().HasProperty(MULTI_ID)) {
-            auto posIt = std::find_if(
-                        largeObjects.begin(),
-                        largeObjects.end(),
-                        [object, MULTI_ID] (std::shared_ptr<MultiObject> multi) {
-                            return !multi->parts.empty() &&
-                            multi->parts.at(0)->GetProperties().GetStringProperty(MULTI_ID) ==
-                            object->GetProperties().GetStringProperty(MULTI_ID);
-                        }
-            );
-
-            // create a new large object
-            if (posIt == largeObjects.end()) {
-                std::shared_ptr<MultiObject> multiObj = std::make_shared<MultiObject>();
-                if (multiObj->y < object->GetY()) {
-                    multiObj->y = object->GetY();
-                }
-                multiObj->parts.push_back(object);
-                // has to be sorted
-                largeObjects.push_back(multiObj);
-            }
-            // add part to found large object
-            else {
-                largeObjects.at(posIt - largeObjects.begin())->parts.push_back(object);
-            }
-            continue;
-        }
-
-        auto posIt = std::find_if(
-                    sortedObjects.begin(),
-                    sortedObjects.end(),
-                    [object] (const Tmx::Object *item) {
-                        return object->GetY() < item->GetY();
-                    }
-        );
-        sortedObjects.insert(posIt, object);
-    }
-
-    // sort large objects by y coordinate
-    std::sort(
-                largeObjects.begin(),
-                largeObjects.end(),
-                [] (std::shared_ptr<MultiObject> left, std::shared_ptr<MultiObject> right) {
-                    return left->y < right->y;
+    // get sorted objects for current layer
+    auto sortedObjectsIt = std::find_if(
+                g_resourceMgr.m_sortedObjects.begin(),
+                g_resourceMgr.m_sortedObjects.end(),
+                [layer] (SortedObjects objects) {
+                    return objects.name == layer->GetName();
                 }
     );
 
+    if (sortedObjectsIt == g_resourceMgr.m_sortedObjects.end()) {
+        return;
+    }
+
     // Render objects in sorted order
     for (int objectIdx = 0, largeIdx = 0;
-         objectIdx < sortedObjects.size() || largeIdx < largeObjects.size();
+         objectIdx < sortedObjectsIt->simpleObjects.size() || largeIdx < sortedObjectsIt->largeObjects.size();
          ) {
 
         const Tmx::Object *object = nullptr;
-        if (objectIdx < sortedObjects.size()) {
-            object = sortedObjects.at(objectIdx);
+        if (objectIdx < sortedObjectsIt->simpleObjects.size()) {
+            object = sortedObjectsIt->simpleObjects.at(objectIdx);
         }
-        std::shared_ptr<MultiObject> largeObject = nullptr;
-        if (largeIdx < largeObjects.size()) {
-            largeObject = largeObjects.at(largeIdx);
+        std::shared_ptr<LargeObject> largeObject = nullptr;
+        if (largeIdx <  sortedObjectsIt->largeObjects.size()) {
+            largeObject =  sortedObjectsIt->largeObjects.at(largeIdx);
         }
 
         if (object != nullptr && (largeObject == nullptr || object->GetY() <= largeObject->y)) {
@@ -219,15 +173,12 @@ void Renderer::renderObjectLayer(const Tmx::ObjectGroup *layer, bool isActorLaye
 void Renderer::renderObject(const Tmx::Object *object)
 {
     int tilesetIdx = g_resourceMgr.m_map->FindTilesetIndex(object->GetGid());
-    //    std::cout << "object Gid = " << object->GetGid() << ", tilesetIdx = " << tilesetIdx << std::endl;
 
     if (tilesetIdx != -1) {
-    //   std::cout << "Getting object tileset" << std::endl;
     const Tmx::Tileset *tileset = g_resourceMgr.m_map->GetTileset(tilesetIdx);
     int tileId = object->GetGid() - tileset->GetFirstGid();
 
         if (tileset != nullptr) {
-            //    std::cout << "Rendering object tile" << std::endl;
             int tilesPerRow = tileset->GetImage()->GetWidth() / tileset->GetTileWidth();
             int tileCol = tileId / tilesPerRow;
 

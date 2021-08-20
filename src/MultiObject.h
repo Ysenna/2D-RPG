@@ -6,10 +6,10 @@
 #include <TmxObject.h>
 
 
-class MultiObject
+class LargeObject
 {
 public:
-    MultiObject();
+    LargeObject();
 
     std::vector<const Tmx::Object*> parts;
     int y = 0;
